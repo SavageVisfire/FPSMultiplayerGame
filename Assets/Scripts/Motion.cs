@@ -15,17 +15,33 @@ public class Motion : MonoBehaviourPunCallbacks
     private float sprintFOVMod = 1.25f;
     public LayerMask ground;
     public Transform groundDetector;
+    public int maxHealth;
+    private int currentHealth;
+    private Manager manager;
+    private Transform UI_HealthBar;
     void Start()
     {
+        currentHealth = maxHealth;
+        manager = GameObject.Find("Manager").GetComponent<Manager>();
         cameraParent.SetActive(photonView.IsMine);
         if(Camera.main) Camera.main.enabled = false;
+        if(!photonView.IsMine){
+            gameObject.layer = 11;
+        }
         rig = GetComponent<Rigidbody>();
+        if(photonView.IsMine){
+        UI_HealthBar=GameObject.Find("HUD/Health/Health").transform;
+        refreshHealthBar();
+        }
     }
     private void Update(){
         if(!photonView.IsMine) return;
         float t_hmove = Input.GetAxisRaw("Horizontal");
         float t_vmove = Input.GetAxisRaw("Vertical");
         bool sprint = Input.GetKey(KeyCode.LeftShift);
+        if(Input.GetKeyDown(KeyCode.RightShift)){
+            takeDamage(100);
+        }
         bool jump = Input.GetKey(KeyCode.Space);
         bool isGrounded = Physics.Raycast(groundDetector.position,Vector3.down,0.1f,ground);
         bool isJumping = jump;
@@ -41,7 +57,7 @@ public class Motion : MonoBehaviourPunCallbacks
             isSprinting = false;
         }
         if(isJumping){
-            rig.AddForce(Vector3.up * jumpForce);
+            rig.AddForce(Vector3.up * jumpForce* Time.deltaTime);
         }
         
     }
@@ -78,5 +94,19 @@ public class Motion : MonoBehaviourPunCallbacks
         Vector3 t_targetVelocity = transform.TransformDirection(t_direction)*t_adjustedSpeed*Time.fixedDeltaTime;
         t_targetVelocity.y = rig.velocity.y;
         rig.velocity = t_targetVelocity;
+    }
+    public void takeDamage(int p_damage){
+        if(photonView.IsMine){
+        currentHealth -= p_damage;
+        refreshHealthBar();
+        if(currentHealth <= 0){
+            manager.Spawn();
+            PhotonNetwork.Destroy(gameObject);
+        }
+        }
+    }
+    private void refreshHealthBar(){
+        float t_health_Ratio = (float)currentHealth/(float)maxHealth;
+        UI_HealthBar.localScale = new Vector3(t_health_Ratio, 0.5f,1);
     }
 }

@@ -166,11 +166,12 @@ MonoBehaviour:
   sprintModifier: 2
   normalCam: {fileID: 558737114305186809}
   cameraParent: {fileID: 558737114050690816}
-  jumpForce: 100
+  jumpForce: 30000
   ground:
     serializedVersion: 2
     m_Bits: 256
   groundDetector: {fileID: 558737112586734026}
+  maxHealth: 200
 --- !u!114 &558737112961176325
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -185,8 +186,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 558737112961176320}
   cams: {fileID: 558737114305186811}
-  xSensitivity: 100
-  ySensitivity: 100
+  xSensitivity: 250
+  ySensitivity: 150
   maxAngle: 80
   weapon: {fileID: 558737114013425560}
 --- !u!114 &558737112961176324

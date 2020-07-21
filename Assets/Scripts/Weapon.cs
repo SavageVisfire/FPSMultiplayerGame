@@ -20,21 +20,23 @@ public class Weapon : MonoBehaviourPunCallbacks
     // Update is called once per frame
     void Update()
     {
-        if(!photonView.IsMine) return;
-        if(Input.GetKeyDown(KeyCode.Alpha1)){
-            Equip(0);
+        if(photonView.IsMine && Input.GetKeyDown(KeyCode.Alpha1)){
+            photonView.RPC("Equip",RpcTarget.All,0);
         }
         if(currentWeapon != null){
+            if(photonView.IsMine){
             Aim(Input.GetMouseButton(1));
             if(Input.GetMouseButton(0) && currentCooldown <=0){
-                Shoot();
+            photonView.RPC("Shoot",RpcTarget.All);
             }
-            currentWeapon.transform.localPosition = Vector3.Lerp(currentWeapon.transform.localPosition,Vector3.zero,Time.deltaTime*4f);
             if(currentCooldown > 0){
                 currentCooldown -= Time.deltaTime;
             }
         }
+        currentWeapon.transform.localPosition = Vector3.Lerp(currentWeapon.transform.localPosition,Vector3.zero,Time.deltaTime*4f);
+        }
     }
+    [PunRPC]
     void Equip(int p_ind)
     {
         if(currentWeapon != null){
@@ -44,7 +46,7 @@ public class Weapon : MonoBehaviourPunCallbacks
         GameObject t_newWeapon = Instantiate(loadout[p_ind].prefab,weaponParent.position, weaponParent.rotation,weaponParent) as GameObject;
         t_newWeapon.transform.localPosition = Vector3.zero;
         t_newWeapon.transform.localEulerAngles = Vector3.zero;
-        t_newWeapon.GetComponent<Sway>().enabled = photonView.IsMine;
+        t_newWeapon.GetComponent<Sway>().isMine = photonView.IsMine;
         currentWeapon = t_newWeapon;
      }
      void Aim(bool p_isAiming){
@@ -57,6 +59,7 @@ public class Weapon : MonoBehaviourPunCallbacks
             t_Anchor.position = Vector3.Lerp(t_Anchor.position,t_state_hip.position,Time.deltaTime * loadout[CurrentIndex].aimSpeed);
         }
      }
+     [PunRPC]
      void Shoot(){
          Transform t_spawn = transform.Find("Cameras/Normal Camera");
          Vector3 t_bloom = t_spawn.position + t_spawn.forward * 1000f;
@@ -69,9 +72,18 @@ public class Weapon : MonoBehaviourPunCallbacks
              GameObject t_newHole = Instantiate(bulletHolePrefab,t_hit.point+t_hit.normal *0.001f,Quaternion.identity) as GameObject;
              t_newHole.transform.LookAt(t_hit.point+t_hit.normal);
              Destroy(t_newHole,5f);
+            if(photonView.IsMine){
+                if(t_hit.collider.gameObject.layer ==11){
+                    t_hit.collider.gameObject.GetPhotonView().RPC("TakeDamage",RpcTarget.All,loadout[CurrentIndex].damage);
+                }
+            }
          }
          currentWeapon.transform.Rotate(-loadout[CurrentIndex].recoil,0,0);
          currentWeapon.transform.position -= currentWeapon.transform.forward * loadout[CurrentIndex].kickback;
          currentCooldown = loadout[CurrentIndex].fireRate;
      }
+    [PunRPC]
+    private void TakeDamage(int p_Damage){
+        GetComponent<Motion>().takeDamage(p_Damage);
+    }
 }

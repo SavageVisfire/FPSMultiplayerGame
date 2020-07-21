@@ -19,3 +19,4 @@ MonoBehaviour:
   bloom: 20
   kickback: 0.005
   fireRate: 0.5
+  damage: 70
