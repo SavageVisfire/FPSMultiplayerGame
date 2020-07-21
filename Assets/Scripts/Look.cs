@@ -1,8 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class Look : MonoBehaviour
+using Photon.Pun;
+public class Look : MonoBehaviourPunCallbacks
 {
     public Transform player;
     public Transform cams;
@@ -21,6 +21,7 @@ public class Look : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(!photonView.IsMine) return;
         SetY();
         SetX();
         UpdateCursorLock();

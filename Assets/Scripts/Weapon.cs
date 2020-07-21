@@ -1,8 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class Weapon : MonoBehaviour
+using Photon.Pun;
+public class Weapon : MonoBehaviourPunCallbacks
 {
     public Gun[] loadout;
     public Transform weaponParent;
@@ -20,6 +20,7 @@ public class Weapon : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(!photonView.IsMine) return;
         if(Input.GetKeyDown(KeyCode.Alpha1)){
             Equip(0);
         }
@@ -43,6 +44,7 @@ public class Weapon : MonoBehaviour
         GameObject t_newWeapon = Instantiate(loadout[p_ind].prefab,weaponParent.position, weaponParent.rotation,weaponParent) as GameObject;
         t_newWeapon.transform.localPosition = Vector3.zero;
         t_newWeapon.transform.localEulerAngles = Vector3.zero;
+        t_newWeapon.GetComponent<Sway>().enabled = photonView.IsMine;
         currentWeapon = t_newWeapon;
      }
      void Aim(bool p_isAiming){

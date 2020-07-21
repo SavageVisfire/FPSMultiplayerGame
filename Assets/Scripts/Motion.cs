@@ -1,13 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class Motion : MonoBehaviour
+using Photon.Pun;
+public class Motion : MonoBehaviourPunCallbacks
 {
     // Start is called before the first frame update
     public float speed;
     public float sprintModifier;
     public Camera normalCam;
+    public GameObject cameraParent;
     public float jumpForce;
     private Rigidbody rig;
     private float baseFOV = 60f;
@@ -16,10 +17,12 @@ public class Motion : MonoBehaviour
     public Transform groundDetector;
     void Start()
     {
-        Camera.main.enabled = false;
+        cameraParent.SetActive(photonView.IsMine);
+        if(Camera.main) Camera.main.enabled = false;
         rig = GetComponent<Rigidbody>();
     }
     private void Update(){
+        if(!photonView.IsMine) return;
         float t_hmove = Input.GetAxisRaw("Horizontal");
         float t_vmove = Input.GetAxisRaw("Vertical");
         bool sprint = Input.GetKey(KeyCode.LeftShift);
@@ -45,6 +48,7 @@ public class Motion : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        if(!photonView.IsMine) return;
         float t_hmove = Input.GetAxisRaw("Horizontal");
         float t_vmove = Input.GetAxisRaw("Vertical");
         bool sprint = Input.GetKey(KeyCode.LeftShift);
