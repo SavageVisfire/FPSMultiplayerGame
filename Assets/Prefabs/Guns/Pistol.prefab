@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8843777076400552283}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: ADS
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39,7 +39,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8843777076814359743}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Hip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -69,7 +69,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8843777076844882501}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Anchor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -104,7 +104,7 @@ GameObject:
   - component: {fileID: 8843777076954364863}
   - component: {fileID: 8843777076954364856}
   - component: {fileID: 8843777076954364857}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Cube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -194,7 +194,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8843777077811958289}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: States
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -229,7 +229,7 @@ GameObject:
   - component: {fileID: 8843777077862502839}
   - component: {fileID: 8843777077862502832}
   - component: {fileID: 8843777077862502833}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -319,7 +319,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8843777078012215742}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Design
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -351,7 +351,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8843777078098260207}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Resources
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -382,7 +382,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8843777078367716311}
   - component: {fileID: 7933872512597894652}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Pistol
   m_TagString: Untagged
   m_Icon: {fileID: 0}

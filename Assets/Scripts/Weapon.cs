@@ -8,6 +8,9 @@ public class Weapon : MonoBehaviour
     public Transform weaponParent;
     private GameObject currentWeapon;
     private int CurrentIndex;
+    public GameObject bulletHolePrefab;
+    public LayerMask canBeShot;
+    private float currentCooldown = 0;
     // Start is called before the first frame update
     void Start()
     {
@@ -22,6 +25,13 @@ public class Weapon : MonoBehaviour
         }
         if(currentWeapon != null){
             Aim(Input.GetMouseButton(1));
+            if(Input.GetMouseButton(0) && currentCooldown <=0){
+                Shoot();
+            }
+            currentWeapon.transform.localPosition = Vector3.Lerp(currentWeapon.transform.localPosition,Vector3.zero,Time.deltaTime*4f);
+            if(currentCooldown > 0){
+                currentCooldown -= Time.deltaTime;
+            }
         }
     }
     void Equip(int p_ind)
@@ -44,5 +54,22 @@ public class Weapon : MonoBehaviour
         }else{
             t_Anchor.position = Vector3.Lerp(t_Anchor.position,t_state_hip.position,Time.deltaTime * loadout[CurrentIndex].aimSpeed);
         }
+     }
+     void Shoot(){
+         Transform t_spawn = transform.Find("Cameras/Normal Camera");
+         Vector3 t_bloom = t_spawn.position + t_spawn.forward * 1000f;
+         t_bloom += Random.Range(-loadout[CurrentIndex].bloom,loadout[CurrentIndex].bloom) * t_spawn.up;
+         t_bloom += Random.Range(-loadout[CurrentIndex].bloom,loadout[CurrentIndex].bloom) * t_spawn.right;
+         t_bloom-= t_spawn.position;
+         t_bloom.Normalize();
+         RaycastHit t_hit = new RaycastHit();
+         if(Physics.Raycast(t_spawn.position,t_bloom,out t_hit,1000f,canBeShot)){
+             GameObject t_newHole = Instantiate(bulletHolePrefab,t_hit.point+t_hit.normal *0.001f,Quaternion.identity) as GameObject;
+             t_newHole.transform.LookAt(t_hit.point+t_hit.normal);
+             Destroy(t_newHole,5f);
+         }
+         currentWeapon.transform.Rotate(-loadout[CurrentIndex].recoil,0,0);
+         currentWeapon.transform.position -= currentWeapon.transform.forward * loadout[CurrentIndex].kickback;
+         currentCooldown = loadout[CurrentIndex].fireRate;
      }
 }
