@@ -11,12 +11,13 @@ public class Look : MonoBehaviour
     public float maxAngle;
     private Quaternion camCenter;
     public static bool cursorLocked = true;
+    public Transform weapon;
     // Start is called before the first frame update
     void Start()
     {
         camCenter = cams.localRotation;
     }
-
+    
     // Update is called once per frame
     void Update()
     {
@@ -31,6 +32,7 @@ public class Look : MonoBehaviour
         Quaternion t_delta = cams.localRotation *t_adj;
         if(Quaternion.Angle(camCenter,t_delta)<maxAngle){
             cams.localRotation = t_delta;
+            weapon.localRotation = t_delta;
         }
     }
     void SetX()

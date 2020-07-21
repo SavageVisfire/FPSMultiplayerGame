@@ -19,10 +19,7 @@ public class Motion : MonoBehaviour
         Camera.main.enabled = false;
         rig = GetComponent<Rigidbody>();
     }
-
-    // Update is called once per frame
-    void FixedUpdate()
-    {
+    private void Update(){
         float t_hmove = Input.GetAxisRaw("Horizontal");
         float t_vmove = Input.GetAxisRaw("Vertical");
         bool sprint = Input.GetKey(KeyCode.LeftShift);
@@ -42,6 +39,28 @@ public class Motion : MonoBehaviour
         }
         if(isJumping){
             rig.AddForce(Vector3.up * jumpForce);
+        }
+        
+    }
+    // Update is called once per frame
+    void FixedUpdate()
+    {
+        float t_hmove = Input.GetAxisRaw("Horizontal");
+        float t_vmove = Input.GetAxisRaw("Vertical");
+        bool sprint = Input.GetKey(KeyCode.LeftShift);
+        bool jump = Input.GetKey(KeyCode.Space);
+        bool isGrounded = Physics.Raycast(groundDetector.position,Vector3.down,0.1f,ground);
+        bool isJumping = jump;
+        if(isGrounded){
+            isJumping = jump;
+        }else{
+            isJumping = false;
+        }
+        bool isSprinting;
+        if(t_vmove > 0 && isJumping == false&& isGrounded == true){
+            isSprinting = sprint;
+        }else{
+            isSprinting = false;
         }
         Vector3 t_direction = new Vector3(t_hmove,0,t_vmove);
         t_direction.Normalize();
