@@ -14,7 +14,7 @@ public class Weapon : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Start()
     {
-        
+        //LineRenderer lineRenderer = gameObject.AddComponent<LineRenderer>();
     }
 
     // Update is called once per frame
@@ -55,6 +55,15 @@ public class Weapon : MonoBehaviourPunCallbacks
         Transform t_state_hip = currentWeapon.transform.Find("States/Hip");
         if(p_isAiming){
             t_Anchor.position = Vector3.Lerp(t_Anchor.position,t_state_ads.position,Time.deltaTime * loadout[CurrentIndex].aimSpeed);
+            Transform t_spawn = transform.Find("Cameras/Normal Camera");
+            Vector3 forward = t_spawn.TransformDirection(Vector3.forward) * 1000f;
+            /*LineRenderer lineRenderer = GetComponent<LineRenderer>(); 
+            lineRenderer.positionCount = 2;
+            lineRenderer.SetPosition(0,t_spawn.forward * 2 + t_spawn.position);
+            lineRenderer.SetPosition(1, t_spawn.forward * 20 + t_spawn.position);
+            lineRenderer.startWidth = 0.1f;*/
+            //lineRenderer.startColor = Color.green;
+            //lineRenderer.endColor = Color.green;
         }else{
             t_Anchor.position = Vector3.Lerp(t_Anchor.position,t_state_hip.position,Time.deltaTime * loadout[CurrentIndex].aimSpeed);
         }

@@ -16,7 +16,7 @@ MonoBehaviour:
   prefab: {fileID: 8843777078367716304, guid: 89ed425e4dbdc874d8592da580ee5e4b, type: 3}
   aimSpeed: 8
   recoil: 0.02
-  bloom: 20
+  bloom: 0
   kickback: 0.005
-  fireRate: 0.5
+  fireRate: 0.15
   damage: 70

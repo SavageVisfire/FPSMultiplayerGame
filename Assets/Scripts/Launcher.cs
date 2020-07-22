@@ -4,7 +4,7 @@ using UnityEngine;
 using Photon.Pun;
 public class Launcher : MonoBehaviourPunCallbacks
 {
-    public void Awake(){
+    public void OnButtonClick(){
         PhotonNetwork.AutomaticallySyncScene = true;
         Connect();
     }
